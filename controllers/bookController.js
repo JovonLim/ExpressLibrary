@@ -154,12 +154,45 @@ exports.book_create_post = [
 
 // Display book delete form on GET.
 exports.book_delete_get = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Book delete GET");
+  // Get details of book and all their instances (in parallel)
+  const [book, allInstancesOfBook] = await Promise.all([
+    Book.findById(req.params.id).exec(),
+    BookInstance.find({ book: req.params.id }, "imprint status").exec(),
+  ]);
+
+  if (book === null) {
+    // No results.
+    res.redirect("/catalog/books");
+  }
+
+  res.render("book/book_delete", {
+    title: "Delete Book",
+    book: book,
+    book_instances: allInstancesOfBook,
+  });
 });
 
 // Handle book delete on POST.
 exports.book_delete_post = asyncHandler(async (req, res, next) => {
-  res.send("NOT IMPLEMENTED: Book delete POST");
+   // Get details of book and all their instances (in parallel)
+   const [book, allInstancesOfBook] = await Promise.all([
+    Book.findById(req.params.id).exec(),
+    BookInstance.find({ book: req.params.id }, "imprint status").exec(),
+  ]);
+
+  if (allInstancesOfBook.length > 0) {
+    // Book has copies. Render in same way as for GET route.
+    res.render("book/book_delete", {
+      title: "Delete Book",
+      book: book,
+      book_instances: allInstancesOfBook,
+    });
+    return;
+  } else {
+    // Book has no copies. Delete object and redirect to the list of books.
+    await Book.findByIdAndRemove(req.body.bookid);
+    res.redirect("/catalog/books");
+  }
 });
 
 // Display book update form on GET.
