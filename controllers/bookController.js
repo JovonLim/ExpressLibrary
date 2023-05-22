@@ -38,7 +38,7 @@ exports.book_list = asyncHandler(async (req, res, next) => {
     .populate("author")
     .exec();
 
-  res.render("book_list", { title: "Book List", book_list: allBooks });
+  res.render("book/book_list", { title: "Book List", book_list: allBooks });
 });
 
 
@@ -57,7 +57,7 @@ exports.book_detail = asyncHandler(async (req, res, next) => {
     return next(err);
   }
 
-  res.render("book_detail", {
+  res.render("book/book_detail", {
     title: book.title,
     book: book,
     book_instances: bookInstances,
@@ -73,7 +73,7 @@ exports.book_create_get = asyncHandler(async (req, res, next) => {
     Genre.find().exec(),
   ]);
 
-  res.render("book_form", {
+  res.render("book/book_form", {
     title: "Create Book",
     authors: allAuthors,
     genres: allGenres,
@@ -137,7 +137,7 @@ exports.book_create_post = [
           genre.checked = "true";
         }
       }
-      res.render("book_form", {
+      res.render("book/book_form", {
         title: "Create Book",
         authors: allAuthors,
         genres: allGenres,
@@ -187,7 +187,7 @@ exports.book_update_get = asyncHandler(async (req, res, next) => {
     }
   }
 
-  res.render("book_form", {
+  res.render("book/book_form", {
     title: "Update Book",
     authors: allAuthors,
     genres: allGenres,
@@ -256,7 +256,7 @@ exports.book_update_post = [
           genre.checked = "true";
         }
       }
-      res.render("book_form", {
+      res.render("book/book_form", {
         title: "Update Book",
         authors: allAuthors,
         genres: allGenres,

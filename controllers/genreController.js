@@ -7,7 +7,7 @@ const { body, validationResult } = require("express-validator");
 // Display list of all Genre.
 exports.genre_list = asyncHandler(async (req, res, next) => {
   const allGenres = await Genre.find().sort({ name: 1 }).exec();
-  res.render("genre_list", {
+  res.render("genre/genre_list", {
     title: "Genre List",
     genre_list: allGenres,
   });
@@ -27,7 +27,7 @@ exports.genre_detail = asyncHandler(async (req, res, next) => {
     return next(err);
   }
 
-  res.render("genre_detail", {
+  res.render("genre/genre_detail", {
     title: "Genre Detail",
     genre: genre,
     genre_books: booksInGenre,
@@ -37,7 +37,7 @@ exports.genre_detail = asyncHandler(async (req, res, next) => {
 
 // Display Genre create form on GET.
 exports.genre_create_get = (req, res, next) => {
-  res.render("genre_form", { title: "Create Genre" });
+  res.render("genre/genre_form", { title: "Create Genre" });
 };
 
 
@@ -59,7 +59,7 @@ exports.genre_create_post = [
 
     if (!errors.isEmpty()) {
       // There are errors. Render the form again with sanitized values/error messages.
-      res.render("genre_form", {
+      res.render("genre/genre_form", {
         title: "Create Genre",
         genre: genre,
         errors: errors.array(),

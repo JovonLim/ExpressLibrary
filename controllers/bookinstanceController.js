@@ -8,7 +8,7 @@ const { body, validationResult } = require("express-validator");
 exports.bookinstance_list = asyncHandler(async (req, res, next) => {
   const allBookInstances = await BookInstance.find().populate("book").exec();
 
-  res.render("bookinstance_list", {
+  res.render("bookinstance/bookinstance_list", {
     title: "Book Instance List",
     bookinstance_list: allBookInstances,
   });
@@ -28,7 +28,7 @@ exports.bookinstance_detail = asyncHandler(async (req, res, next) => {
     return next(err);
   }
 
-  res.render("bookinstance_detail", {
+  res.render("bookinstance/bookinstance_detail", {
     title: "Book:",
     bookinstance: bookInstance,
   });
@@ -39,7 +39,7 @@ exports.bookinstance_detail = asyncHandler(async (req, res, next) => {
 exports.bookinstance_create_get = asyncHandler(async (req, res, next) => {
   const allBooks = await Book.find({}, "title").exec();
 
-  res.render("bookinstance_form", {
+  res.render("bookinstance/bookinstance_form", {
     title: "Create BookInstance",
     book_list: allBooks,
   });
@@ -78,7 +78,7 @@ exports.bookinstance_create_post = [
       // Render form again with sanitized values and error messages.
       const allBooks = await Book.find({}, "title").exec();
 
-      res.render("bookinstance_form", {
+      res.render("bookinstance/bookinstance_form", {
         title: "Create BookInstance",
         book_list: allBooks,
         selected_book: bookInstance.book._id,
